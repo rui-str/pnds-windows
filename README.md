@@ -54,7 +54,7 @@ PowerDns windows版本编译。  pdns源码地址：https://github.com/PowerDNS/
 ```
 * configure.ac中增加 CPPFLAGS="-D_XOPEN_SOURCE=700"
 ```
-  configure.ac:22 +: ${CPPFLAGS="-D_XOPEN_SOURCE=700"}
+  configure.ac:22 +: :${CPPFLAGS="-D_XOPEN_SOURCE=700"}
 ```
 * 源码修改
 ```
