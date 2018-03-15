@@ -5,7 +5,7 @@ PowerDns windows版本编译。  pdns源码地址：https://github.com/PowerDNS/
 ## 构建环境
 >Windows10、Cygwin2.889（64bit）
 ## 依赖
-  boost、openssl; gcc-g++、ragel、bison、flex、pip、virtualenv、libtool、automake、aotuconfig  
+  boost、openssl; gcc-g++、make、ragel、bison、flex、pip、virtualenv、libtool、automake、aotuconfig  
  注：所有依赖需在Cygwin上安装，其中除ragel和virtualenv，其余均可通过Cygwin安装程序直接安装。virtualenv可在Cygwin
  下通过 pip install virtualenv直接安装。ragel可下载源码，通过Cygwin编译后安装。ragel安装详情如下：
  ```
