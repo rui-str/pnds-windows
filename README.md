@@ -139,7 +139,8 @@ PowerDns windows版本编译。  pdns源码地址：https://github.com/PowerDNS/
         socketname = LOCALSTATEDIR;
     DynListener::DynListener(const string &progname)
     else if(errno!=EEXIST) {
-      L<<Logger::Critical<<"Unable to create socket directory ("<<socketname<<") and it does not exist yet"<<endl;
+      L<<Logger::Critical<<"Unable to create socket directory ("<< \
+      socketname<<") and it does not exist yet"<<endl;
       exit(1);
     }
     替换为：string socketname("./");
@@ -239,7 +240,7 @@ CREATE TABLE tsigkeys (
 CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
 ```
 ## pdns配置
-在/usr/local/etc 目录下创建配置文件pdns.conf。配置详情见PowerDns官网 https://doc.powerdns.com/authoritative/index.html
+在/usr/local/etc(或其他上文所述自定义) 目录下创建配置文件pdns.conf。配置详情见PowerDns官网 https://doc.powerdns.com/authoritative/index.html
 示例如下：
 ```
   local-address=127.0.0.1
@@ -259,4 +260,13 @@ CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
   webserver-port=8081
   webserver-allow-from=0.0.0.0/0,::0
 ```
-
+### 附：打包为独立可执行程序所需Cygwin相关转换库
+Cygwin动态库目录：cygwin64\bin （cygwin64为Cygwin根目录）
+Cygwin版本不同，所需dll可能不同，以下列出项，仅作参考：
+* cygcrypto-1.0.0.dll，
+* cyggcc_s-seh-1.dll，
+* cygmysqlclient-18.dll，
+* cygssl-1.0.0.dll，
+* cygstdc++-6.dll，
+* cygwin1.dll，
+* cygz.dll
