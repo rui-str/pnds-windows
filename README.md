@@ -67,7 +67,10 @@ PowerDns windows版本编译。  pdns源码地址：https://github.com/PowerDNS/
   pdns/receiver.cc:513 -: loadModules();
 ```
 ```
-  pdns/iputils.hh:81-82 替换为如下内容：
+  pdns/iputils.hh:81-82 源码如下：
+    #ifdef __FreeBSD__
+    #include <sys/endian.h>
+  替换为如下内容：
     #if defined(__linux__) || defined(__CYGWIN__)
     /* Define necessary macros for the header to expose all fields. */
     #   define _BSD_SOURCE 
@@ -120,6 +123,26 @@ PowerDns windows版本编译。  pdns源码地址：https://github.com/PowerDNS/
     #       endif
     #   endif
   注：此处修改引自: https://gist.github.com/panzi/6856583
+```
+若需打包为不依赖Cygwin目录结构的可执行程序，还需做如下修改：
+```
+修改配置文件pdns.conf所在目录：（注：该目录下必须包含pdns.conf,这里仅简单指定为当前运行目录，仅作参考） 
+  pdns/receiver.cc:453 -: string configname=::arg()["config-dir"]+"/"+s_programname+".conf";
+  pdns/receiver.cc:453 +: string configname="./"+s_programname+".conf";
+```
+```
+修改socket创建目录：（注：该目录必须有效,这里仅简单指定为当前运行目录，仅作参考） 
+  pdns/dynlistener.cc:184-201 源代码如下：
+  string socketname = ::arg()["socket-dir"];
+    if (::arg()["socket-dir"].empty()) {
+      if (::arg()["chroot"].empty())
+        socketname = LOCALSTATEDIR;
+    DynListener::DynListener(const string &progname)
+    else if(errno!=EEXIST) {
+      L<<Logger::Critical<<"Unable to create socket directory ("<<socketname<<") and it does not exist yet"<<endl;
+      exit(1);
+    }
+    替换为：string socketname("./");
 ```
 ## 编译带MySQL后端的pdns
 ```
@@ -236,3 +259,4 @@ CREATE UNIQUE INDEX namealgoindex ON tsigkeys(name, algorithm);
   webserver-port=8081
   webserver-allow-from=0.0.0.0/0,::0
 ```
+
